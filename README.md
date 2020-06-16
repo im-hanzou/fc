@@ -1,6 +1,6 @@
 # Facebook account craker without login.
 
-![img](https://github.com/dz-id/fc/ss.png)
+![img](ss.png)
 
 ### Install
 * pkg update && pkg upgrade
